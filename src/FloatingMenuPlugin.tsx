@@ -11,7 +11,7 @@ import { computePosition } from "@floating-ui/dom";
 
 import { usePointerInteractions } from "./hooks/usePointerInteractions";
 
-const DEFAULT_DOM_ELEMENT = document.body;
+const IS_BROWSER = typeof document !== "undefined";
 
 type FloatingMenuCoords = { x: number; y: number } | undefined;
 
@@ -91,7 +91,7 @@ export function FloatingMenuPlugin({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPointerReleased, $handleSelectionChange, editor]);
 
-  if (!MenuComponent) return null;
+  if (!IS_BROWSER || !MenuComponent) return null;
 
   return createPortal(
     <div
@@ -107,6 +107,6 @@ export function FloatingMenuPlugin({
     >
       <MenuComponent editor={editor} shouldShow={show} />
     </div>,
-    element ?? DEFAULT_DOM_ELEMENT
+    element ?? document.body
   );
 }
